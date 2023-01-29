@@ -29,11 +29,7 @@ jobs:
       #- name: Publish macOs
       #  run: dotnet publish ./CsvPowerTemperature.sln -c Release -r osx-x64 /p:PublishSingleFile=true --self-contained
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: actions/upload-artifact@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          title: "Windows-${{github.ref_name}}"
-          prerelease: false
-          files: |
-            LICENSE.txt
-            ./bin/Release/net6.0/win-x64/publish/*
+          name: windows
+          path: bin/Release/net6.0/win-x64/publish
