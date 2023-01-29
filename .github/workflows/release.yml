@@ -31,5 +31,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: windows
+          name: "CsvPowerTemperature-windows_${{github.ref_name}}"
           path: bin/Release/net6.0/win-x64/publish
