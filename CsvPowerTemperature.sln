@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvPowerToTemp", "CsvPowerToTemp.csproj", "{890890F9-1373-476D-8837-1964274A80FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{890890F9-1373-476D-8837-1964274A80FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890890F9-1373-476D-8837-1964274A80FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890890F9-1373-476D-8837-1964274A80FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890890F9-1373-476D-8837-1964274A80FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {961A2FBE-2703-4834-ACB7-B2953C11339E}
+	EndGlobalSection
+EndGlobal
