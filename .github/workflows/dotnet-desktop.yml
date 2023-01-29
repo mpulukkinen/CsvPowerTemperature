@@ -17,6 +17,6 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore ./CsvPowerTemperature.sln
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./CsvPowerTemperature.sln --configuration Release --no-restore
