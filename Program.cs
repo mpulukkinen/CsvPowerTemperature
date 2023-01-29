@@ -1,4 +1,4 @@
-using System.Globalization;
+ï»¿using System.Globalization;
 using Csv;
 namespace CsvPowerToTemp;
 class Program
@@ -43,7 +43,7 @@ class Program
 
         var tempDict = new Dictionary<string, int>();
 
-        var location = "Lempäälä";
+        var location = "LempÃ¤Ã¤lÃ¤";
 
         if(argsAsList.IndexOf("-l") > 0)
         {
