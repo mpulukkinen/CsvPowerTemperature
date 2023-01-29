@@ -1,0 +1,30 @@
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release win"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Install dependencies
+        run: dotnet restore ./CsvPowerTemperature.sln
+      - name: Publish win
+        run: dotnet publish ./CsvPowerTemperature.sln -c Release -r win-x64 /p:PublishSingleFile=true --self-contained
+      #- name: Publish linux
+      #  run: dotnet publish ./CsvPowerTemperature.sln -c Release -r linux-x64 /p:PublishSingleFile=true --self-contained
+      #- name: Publish macOs
+      #  run: dotnet publish ./CsvPowerTemperature.sln -c Release -r osx-x64 /p:PublishSingleFile=true --self-contained
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          title: "Windows-${{github.ref_name}}"
+          prerelease: false
+          files: |
+            LICENSE.txt
+            ./bin/Release/net6.0/win-x64/publish/*

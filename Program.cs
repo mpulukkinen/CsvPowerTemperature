@@ -74,6 +74,8 @@ class Program
         }
 
         Log.CloseAndFlush();
+        Console.WriteLine("Press any key to quit");
+        Console.ReadLine();
     }
 
     private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
