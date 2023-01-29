@@ -6,5 +6,5 @@ public class PowerReading
     public float Power { get; set; }
     public int? Temp { get; set; }
     public string DateAsDayComparable => Time.ToString("dd.MM.yyy");
-    public string Source { get; set; }
+    public string? Source { get; set; }
 }
