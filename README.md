@@ -1,21 +1,16 @@
 ﻿# Projektin nimi
 
-Csv power to temperature: Tarkoituksena sisäänottaa Elenia Aina-portaalin tuntikohtaista sähkönkulutusdataa, määrittelä vertailukohta ja näyttää lämpötilakohtaisesti, paljonko sähköä on kulunut ajanjaksolal / vertailujaksoilla. 
+Csv power to temperature: Tarkoituksena sisäänottaa Elenia Aina-portaalin tuntikohtaista sähkönkulutusdataa, määrittellä vertailukohta ja näyttää lämpötilakohtaisesti, paljonko sähköä on kulunut ajanjaksolla / vertailujaksoilla. 
 Koska vuodet eivät ole veljiä keskenään...
-TODO: WIP, lisäohhjeita tuloss
+TODO: WIP, lisäohjeita tulossa
 
 ## Asennus / ohjeet
 
-TODO: WIP
+Tarvitaan vähintään: dotnet 6
+LIsäksi: Visual studio / visual studio code
 
-```shell
-
-```
 
 ## Kehitys
-
-Here's a brief intro about what a developer must do in order to start developing
-the project further:
 
 ```shell
 git clone https://github.com/mpulukkinen/CsvPowerTemperature.git
@@ -27,18 +22,8 @@ And state what happens step-by-step.
 
 ### Kääntäminen
 
-TODO: WIP
-
 ```shell
 dotnet build
-```
-
-### Julkaisu
-
-TODO: WIP
-
-```shell
-
 ```
 
 ## Ominaisuudet
