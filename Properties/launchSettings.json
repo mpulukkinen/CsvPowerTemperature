@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CsvPowerToTemp": {
+      "commandName": "Project",
+      "commandLineArgs": "-d 15.11.2022 -cl -s -m"
+    }
+  }
+}

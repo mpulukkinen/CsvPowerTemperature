@@ -19,6 +19,7 @@ the project further:
 
 ```shell
 git clone https://github.com/mpulukkinen/CsvPowerTemperature.git
+Ajaminen komentoriviltä (esimerkiksi): dotnet run -d 15.11.2022 -cl -s -m
 
 ```
 
@@ -29,7 +30,7 @@ And state what happens step-by-step.
 TODO: WIP
 
 ```shell
-
+dotnet build
 ```
 
 ### Julkaisu
