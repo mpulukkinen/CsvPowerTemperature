@@ -1,11 +1,9 @@
-﻿using System.Globalization;
-using System.Linq;
-using Csv;
-using CsvPowerToTemp.DataConverters;
+﻿using CsvPowerToTemp.DataConverters;
 using CsvPowerToTemp.DataHealers;
 using CsvPowerToTemp.DataVisualizers;
 using CsvPowerToTemp.Interfaces;
 using CsvPowerToTemp.PowerReadingProviders;
+using Serilog;
 
 namespace CsvPowerToTemp;
 class Program
@@ -17,6 +15,17 @@ class Program
 
     static async Task Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("logs/debug.log")
+                .CreateLogger();
+
+        AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionTrapper;
+
+        Log.Information("--- Start CsvPowerToTemp ---");
+
+
         var argsAsList = args.ToList();
         if(argsAsList.Any(a => a == "-h" || a == "?" || a == "help"))
         {
@@ -34,7 +43,7 @@ class Program
             return;
         }
 
-        Console.WriteLine("Collecting data...");
+        Log.Debug("Collecting data...");
 
         var listOfAllReadings = _providers.Select(async s => await s.GetPowerReadings(args)).Select(s => s.Result).ToList();
 
@@ -62,6 +71,13 @@ class Program
         foreach (var v in _visualizers)
         {
             v.VisualizeData(listOfAllReadings, args);
-        }        
+        }
+
+        Log.CloseAndFlush();
+    }
+
+    private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
+    {
+        Log.Error((Exception)e.ExceptionObject, "Unhandled exception");
     }
 }

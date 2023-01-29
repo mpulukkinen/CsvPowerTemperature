@@ -60,6 +60,7 @@ Jos kirjoitat bugeja, loki pakollinen, muuten lentää bugirapsa roskiin ja nope
 - Github: https://github.com/mpulukkinen/CsvPowerTemperature
 - Riippuvuudet:
   - https://github.com/stevehansen/csv/
+  - https://github.com/serilog/serilog
 
 
 ## Lisenssi

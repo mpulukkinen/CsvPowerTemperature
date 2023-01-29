@@ -13,15 +13,6 @@ public class TemperatureModifiers
             // Only do this if there's readings for the whole day
             if(valsAsList.Count == 24) {
                 var amountToReduce = 4;
-
-                /*var debugList = g.OrderBy(o => o.Power).Reverse().Take(amountToReduce).ToList();
-
-                debugList.ForEach(t => Console.WriteLine($"Took out {t.Power} from {t.DateAsDayComparable}"));
-
-                var nextInLIne = g.OrderBy(o => o.Power).Reverse().Skip(amountToReduce).First();
-
-                Console.WriteLine($"Next in line: {nextInLIne.Power} from {nextInLIne.DateAsDayComparable}");*/
-
                 output.AddRange(g.OrderBy(o => o.Power).Reverse().Skip(amountToReduce));
             } 
             else

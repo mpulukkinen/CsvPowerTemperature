@@ -1,4 +1,5 @@
 ﻿using CsvPowerToTemp.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,7 +38,7 @@ namespace CsvPowerToTemp.DataConverters
                     {
                         if(y.Time >= dateSplit && !dateSplitted)
                         {
-                            Console.WriteLine($"DO SPLIT: {dateSplit}");
+                            Log.Information($"DO SPLIT (date): {dateSplit}");
                             output.Add(currentList);
                             currentList = new List<PowerReading>() { y };
                             dateSplitted = true;
@@ -51,7 +52,7 @@ namespace CsvPowerToTemp.DataConverters
                     {
                         if(!string.IsNullOrEmpty(previousSource) && previousSource != y.Source)
                         {
-                            Console.WriteLine($"DO SPLIT: {dateSplit}");
+                            Log.Information("DO SPLIT (file)");
                             output.Add(currentList);
                             currentList = new List<PowerReading>() { y };
                         } else

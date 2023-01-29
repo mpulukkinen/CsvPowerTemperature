@@ -1,3 +1,4 @@
+using Serilog;
 using System.Xml;
 
 namespace CsvPowerToTemp.DataHealers;
@@ -6,7 +7,7 @@ public class WeatherService
 {
     private bool _isFirstQuery = true;
     private HttpClient? _client;
-    public async Task<int> GetAvgTemperatureForDate(DateTime time)
+    public async Task<int> GetAvgTemperatureForDate(DateTime time, string location)
     {
         if (_isFirstQuery)
         {
@@ -18,7 +19,8 @@ public class WeatherService
         var start = time.ToString("yyyy-MM-dd");
         var end = time.AddDays(1).ToString("yyyy-MM-dd");
 
-        var request = "wfs/fin?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Lempäälä" +
+        var request = "wfs/fin?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::" +
+                                                                    $"timevaluepair&place={location}" +
                                                                     "&parameters=t2m&" +
                                                                     $"starttime={start}T00:00:00Z&" +
                                                                     $"endtime={end}T00:00:00Z&" +
@@ -48,7 +50,6 @@ public class WeatherService
                 if (temps.Count > 0)
                 {
                     var avg = temps.Average();
-                    Console.WriteLine($"Average temp for {time} is {avg}");
                     return (int)Math.Round(avg);
                 }
 
@@ -57,12 +58,12 @@ public class WeatherService
             }
             else
             {
-                Console.WriteLine($"Status code: {res.StatusCode}");
+                Log.Warning($"Status code: {res.StatusCode}, time: {time}, location {location}");
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Log.Error(e, $"Unable to get temperature for {time} in {location}");
         }
 
         return int.MaxValue;

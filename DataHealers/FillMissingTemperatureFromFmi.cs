@@ -1,4 +1,5 @@
 ﻿using CsvPowerToTemp.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,17 +53,17 @@ namespace CsvPowerToTemp.DataHealers
                     {
                         Console.WriteLine($"Temperature was null, try to find from open sources: {d.Time}");
 
-                        var tempFromExternalSource = await _weather.GetAvgTemperatureForDate(d.Time);
+                        var tempFromExternalSource = await _weather.GetAvgTemperatureForDate(d.Time, location);
 
                         if (tempFromExternalSource != int.MaxValue)
                         {
-                            Console.WriteLine($"Temperature for {d.DateAsDayComparable} in {location}");
+                            Log.Debug($"Temperature for {d.DateAsDayComparable} in {location}");
                             tempDict[d.DateAsDayComparable] = tempFromExternalSource;
                             d.Temp = tempFromExternalSource;
                         }
                         else
                         {
-                            Console.WriteLine($"Unable to get temperature for {d.DateAsDayComparable} in {location}");
+                            Log.Warning($"Unable to get temperature for {d.DateAsDayComparable} in {location}");
                         }
                     }
                 } 

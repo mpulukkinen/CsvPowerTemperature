@@ -1,10 +1,4 @@
 ﻿using CsvPowerToTemp.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.DataVisualizers
 {
@@ -38,9 +32,9 @@ namespace CsvPowerToTemp.DataVisualizers
                     if (group2.FindIndex(y => y.Key == x.Key) >= 0)
                     {
                         var match = group2.FirstOrDefault(y => y.Key == x.Key);
-                        Console.WriteLine($"Temperature: {x.Key.ToString().PadRight(3)}, Sample1: power: {x.power.ToString("0.0000")} Kwh, " +
-                            $"sample count: {x.sampleCount.ToString().PadRight(3)}{(samplesAsDays ? "d" : "h")}. " +
-                            $"Sample 2: power: {match.power.ToString("0.0000")} Kwh, sample count: {match.sampleCount.ToString().PadRight(3)}{(samplesAsDays ? "d" : "h")}, " +
+                        Console.WriteLine($"Temperature: {x.Key,-3}, Sample1: power: {x.power.ToString("0.0000")} Kwh, " +
+                            $"sample count: {x.sampleCount,-3}{(samplesAsDays ? "d" : "h")}. " +
+                            $"Sample 2: power: {match.power.ToString("0.0000")} Kwh, sample count: {match.sampleCount,-3}{(samplesAsDays ? "d" : "h")}, " +
                             $"power difference: {(match.power - x.power).ToString("0.0000")}Kwh");
                     }
                 });
