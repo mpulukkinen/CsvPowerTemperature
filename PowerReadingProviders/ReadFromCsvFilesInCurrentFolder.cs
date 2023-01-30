@@ -48,7 +48,12 @@ namespace CsvPowerToTemp.PowerReadingProviders
                     {
                         var actualDate = DateTime.ParseExact(time, "d.M. mm:hh:ss", provider);
                         actualDate = new DateTime(year, actualDate.Month, actualDate.Day, actualDate.Hour, actualDate.Minute, actualDate.Second);
-                        var reading = new PowerReading { Power = float.Parse(power), Temp = string.IsNullOrEmpty(temp) ? null: (int)Math.Round(float.Parse(temp)), Time = actualDate, Source = file};
+                        var reading = new PowerReading { 
+                            Power = float.Parse(power, CultureInfo.InvariantCulture), 
+                            Temp = string.IsNullOrEmpty(temp) ? null: (int)Math.Round(float.Parse(temp, CultureInfo.InvariantCulture)), 
+                            Time = actualDate, 
+                            Source = file
+                        };
                         currentList.Add(reading);
                     }
                     catch (Exception e)
