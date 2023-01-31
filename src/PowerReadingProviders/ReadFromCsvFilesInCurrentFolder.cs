@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace CsvPowerToTemp.PowerReadingProviders
 {
-    internal class ReadFromCsvFilesInCurrentFolder : IPowerReadingProvider, IHelpProvider
+    public class ReadFromCsvFilesInCurrentFolder : IPowerReadingProvider, IHelpProvider
     {
         public async Task<List<PowerReading>> GetPowerReadings(string[] args)
         {
@@ -48,9 +48,13 @@ namespace CsvPowerToTemp.PowerReadingProviders
                     {
                         var actualDate = DateTime.ParseExact(time, "d.M. mm:hh:ss", provider);
                         actualDate = new DateTime(year, actualDate.Month, actualDate.Day, actualDate.Hour, actualDate.Minute, actualDate.Second);
+
+                        var pwr = float.Parse(power, CultureInfo.InvariantCulture);
+                        int? tmp = string.IsNullOrEmpty(temp) ? null : (int)Math.Round(float.Parse(temp, CultureInfo.InvariantCulture));
+
                         var reading = new PowerReading { 
-                            Power = float.Parse(power, CultureInfo.InvariantCulture), 
-                            Temp = string.IsNullOrEmpty(temp) ? null: (int)Math.Round(float.Parse(temp, CultureInfo.InvariantCulture)), 
+                            Power = pwr, 
+                            Temp = tmp, 
                             Time = actualDate, 
                             Source = file
                         };

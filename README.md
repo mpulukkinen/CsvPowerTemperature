@@ -6,8 +6,14 @@ TODO: WIP, lisäohjeita tulossa
 
 ## Asennus / ohjeet
 
+Lataa Releases-osiolta uusin julkaisu
+
+Huom: Linuxilla kutsu ensin chmod +x ./CsvPowerToTemp
+Sitten vasta ./CsvPowerToTemp
+
+TAI lähdekoodista: 
 Tarvitaan vähintään: dotnet 6
-LIsäksi: Visual studio / visual studio code
+Lisäksi: Visual studio / visual studio code
 
 
 ## Kehitys

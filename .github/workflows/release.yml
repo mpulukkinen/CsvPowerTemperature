@@ -26,23 +26,23 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore ./CsvPowerTemperature.sln
+        run: dotnet restore ./src/CsvPowerToTemp.csproj
       - name: Publish win
-        run: dotnet publish ./CsvPowerTemperature.sln -c Release -r win-x64 /p:PublishSingleFile=true --self-contained
+        run: dotnet publish ./src/CsvPowerToTemp.csproj -c Release -r win-x64 /p:PublishSingleFile=true --self-contained
       - name: Publish linux
-        run: dotnet publish ./CsvPowerTemperature.sln -c Release -r linux-x64 /p:PublishSingleFile=true --self-contained
+        run: dotnet publish ./src/CsvPowerToTemp.csproj -c Release -r linux-x64 /p:PublishSingleFile=true --self-contained
       - name: Publish macOs
-        run: dotnet publish ./CsvPowerTemperature.sln -c Release -r osx-x64 /p:PublishSingleFile=true --self-contained
+        run: dotnet publish ./src/CsvPowerToTemp.csproj -c Release -r osx-x64 /p:PublishSingleFile=true --self-contained
 
       - uses: actions/upload-artifact@v3
         with:
           name: "CsvPowerTemperature-windows_${{github.ref_name}}"
-          path: bin/Release/net6.0/win-x64/publish
+          path: src/bin/Release/net6.0/win-x64/publish
       - uses: actions/upload-artifact@v3
         with:
           name: "CsvPowerTemperature-linux-x64_${{github.ref_name}}"
-          path: bin/Release/net6.0/linux-x64/publish
+          path: src/bin/Release/net6.0/linux-x64/publish
       - uses: actions/upload-artifact@v3
         with:
           name: "CsvPowerTemperature-osx-x64_${{github.ref_name}}"
-          path: bin/Release/net6.0/osx-x64/publish
+          path: src/bin/Release/net6.0/osx-x64/publish
