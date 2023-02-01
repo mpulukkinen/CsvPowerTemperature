@@ -24,7 +24,7 @@ namespace CsvPowerToTemp.PowerReadingProviders
             {
                 Log.Debug($"Processing file: {file}"); //, split by date: {splitByDate}, date to split: {dateSplit}");
 
-                var year = int.Parse(string.Join("", file.Split("_")[1].Take(4)));
+                var year = int.Parse(string.Join("", Path.GetFileName(file).Split("_")[1].Take(4)));
 
                 foreach (var line in CsvReader.ReadFromText(File.ReadAllText(file)))
                 {
