@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.DataConverters
 {
-    internal class SplitDataByDateOrFile : IDataConverter, IHelpProvider
+    public class SplitDataByDateOrFile : IDataConverter, IHelpProvider
     {
+        public static string DateSplitFormat = "d.M.yyyy";
         public Task<List<List<PowerReading>>> ConvertData(List<List<PowerReading>> data, string[] args)
         {
             CultureInfo provider = CultureInfo.InvariantCulture;
@@ -20,7 +21,7 @@ namespace CsvPowerToTemp.DataConverters
 
             if (splitByDate)
             {
-                dateSplit = DateTime.ParseExact(args[args.ToList().IndexOf("-d") + 1], "d.M.yyyy", provider);
+                dateSplit = DateTime.ParseExact(args[args.ToList().IndexOf("-d") + 1], DateSplitFormat, provider);
             }
 
             var dateSplitted = false;
@@ -28,10 +29,9 @@ namespace CsvPowerToTemp.DataConverters
             List<List<PowerReading>> output = new List<List<PowerReading>>();
 
             var currentList = new List<PowerReading>();
-
+            var previousSource = "";
             data.ForEach(x =>
-            {
-                var previousSource = "";
+            {                
                 x.ForEach(y =>
                 {
                     if (splitByDate)
