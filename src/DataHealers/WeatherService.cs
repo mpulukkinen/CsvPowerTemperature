@@ -55,29 +55,32 @@ public class WeatherService
                             var attValue = att.Value;
                             if (attName == "gml:id" && attValue == "obs-obs-1-1-tday")
                             {
-                                var temp = "";
-                                var date = "";
-                                foreach (XmlNode child in xn.ChildNodes[0].ChildNodes[0].ChildNodes)
+                                foreach (XmlNode cn in xn.ChildNodes)
                                 {
-                                    if (child.Name == "wml2:value")
+                                    var temp = "";
+                                    var date = "";
+                                    foreach (XmlNode child in cn.ChildNodes[0].ChildNodes)
                                     {
-                                        temp = child.InnerText;
+                                        if (child.Name == "wml2:value")
+                                        {
+                                            temp = child.InnerText;
+                                        }
+
+                                        if (child.Name == "wml2:time")
+                                        {
+                                            date = child.InnerText.Substring(0, 10);
+                                        }
                                     }
 
-                                    if (child.Name == "wml2:time")
+                                    if (temp != null && date != null)
                                     {
-                                        date = child.InnerText.Substring(0, 10);
+                                        if (!temps.ContainsKey(date))
+                                        {
+                                            temps[date] = new List<float>();
+                                        }
+                                        temps[date].Add(float.Parse(temp));
                                     }
-                                }
-
-                                if (temp != null && date != null)
-                                {
-                                    if (!temps.ContainsKey(date))
-                                    {
-                                        temps[date] = new List<float>();
-                                    }
-                                    temps[date].Add(float.Parse(temp));
-                                }
+                                }                                
                             }
                         }                        
                     }
