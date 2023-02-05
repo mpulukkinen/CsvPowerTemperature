@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.Interfaces
 {
-    internal interface IPowerReadingVisualizer : IHelpProvider
+    public interface IPowerReadingVisualizer : IHelpProvider
     {
         void VisualizeData(List<List<PowerReading>> data, string[] args);
     }

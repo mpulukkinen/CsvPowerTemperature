@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.Interfaces
 {
-    internal interface IPowerReadingProvider
+    public interface IPowerReadingProvider
     {
         public Task<List<PowerReading>> GetPowerReadings(string[] args);
     }

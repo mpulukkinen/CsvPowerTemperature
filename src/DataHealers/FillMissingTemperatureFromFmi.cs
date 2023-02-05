@@ -12,54 +12,62 @@ namespace CsvPowerToTemp.DataHealers
     internal class FillMissingTemperatureFromFmi : IDataHealer, IHelpProvider
     {
         private static WeatherService _weather = new WeatherService();
-        public async Task HealData(List<PowerReading> data, string[] args)
+        public async Task HealData(List<PowerReading> data, string[] args, ITemperatureCache cache, string locationOverride = "")
         {
-            var tempDict = new Dictionary<string, int>();
-            var cacheLocation = "./tempCache.txt";
-
-            if (args.Any(a => a == "-c") && File.Exists(cacheLocation))
-            {
-                File.Delete(cacheLocation);
-            }
-
-            var location = "Lempäälä";
+            var location = string.IsNullOrEmpty(locationOverride) ? "Lempäälä": locationOverride;
 
             var ix = args.ToList().IndexOf("-l");
 
-            if (ix > 0)
+            if (ix > 0 && string.IsNullOrEmpty(locationOverride))
             {
                 location = args[ix + 1];
-            }
+            }            
 
-            if (File.Exists(cacheLocation))
+            if (args.Any(a => a == "-c"))
             {
-                var lines = (await File.ReadAllTextAsync(cacheLocation)).Split("\n").Where(s => !string.IsNullOrEmpty(s)).ToList();
-
-                lines.ForEach(l => {
-                    var lineSplit = l.Split(":");
-                    tempDict[lineSplit[0]] = int.Parse(lineSplit[1]);
-                });
+                cache.ClearCache(location);
             }
 
-            foreach(var d in data)
+            await cache.InitializeCache(location);
+
+            foreach (var d in data)
             {                
                 if (d.Temp == null)
                 {
-                    if (tempDict.ContainsKey(d.DateAsDayComparable))
+                    if (cache.ContainsKey(d.DateAsDayComparable))
                     {
-                        d.Temp = tempDict[d.DateAsDayComparable];
+                        d.Temp = cache[d.DateAsDayComparable];
                     }
                     else
                     {
-                        Console.WriteLine($"Temperature was null, try to find from open sources: {d.Time}");
+                        var currentIndex = data.IndexOf(d) + 1;
 
-                        var tempFromExternalSource = await _weather.GetAvgTemperatureForDate(d.Time, location);
+                        var end = new DateTime(d.Time.Ticks);
 
-                        if (tempFromExternalSource != int.MaxValue)
+                        // look ahead
+                        for (int i = currentIndex; i < data.Count; i++)
                         {
-                            Log.Debug($"Temperature for {d.DateAsDayComparable} in {location}");
-                            tempDict[d.DateAsDayComparable] = tempFromExternalSource;
-                            d.Temp = tempFromExternalSource;
+                            if (data[i].Temp == null && !cache.ContainsKey(data[i].DateAsDayComparable))
+                            {                 
+                                end = data[i].Time;
+                            } 
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        var tempFromExternalSource = await _weather.GetAvgTemperatureForDate(d.Time, end, location);
+
+                        foreach (var kvp in tempFromExternalSource) 
+                        {
+                            cache[kvp.Key] = kvp.Value;                            
+                        }
+
+                        if (cache.ContainsKey(d.DateAsDayComparable))
+                        {
+                            Console.WriteLine($"Temperature was null, found from open sources: {d.Time}: {cache[d.DateAsDayComparable]}");
+                            d.Temp = cache[d.DateAsDayComparable];
                         }
                         else
                         {
@@ -69,22 +77,11 @@ namespace CsvPowerToTemp.DataHealers
                 } 
                 else
                 {
-                    tempDict[d.DateAsDayComparable] = d.Temp.Value;
+                    cache[d.DateAsDayComparable] = d.Temp.Value;
                 }
             }
 
-            var tempCacheOutput = "";
-            foreach (var kvp in tempDict)
-            {
-                tempCacheOutput += kvp.Key + ":" + kvp.Value.ToString() + "\n";
-            }
-
-            if (File.Exists(cacheLocation))
-            {
-                File.Delete(cacheLocation);
-            }
-
-            File.WriteAllText(cacheLocation, tempCacheOutput);
+            cache.PersistData(location);
         }
 
         public void PrintHelpToConsole()

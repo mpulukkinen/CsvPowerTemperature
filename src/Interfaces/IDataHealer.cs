@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.Interfaces
 {
-    internal interface IDataHealer
+    public interface IDataHealer
     {
-        Task HealData(List<PowerReading> data, string[] args);
+        Task HealData(List<PowerReading> data, string[] args, ITemperatureCache cache, string locationOverride);
     }
 }

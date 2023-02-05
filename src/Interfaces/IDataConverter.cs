@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.Interfaces
 {
-    internal interface IDataConverter
+    public interface IDataConverter
     {
         Task<List<List<PowerReading>>> ConvertData(List<List<PowerReading>> data, string[] args);
     }

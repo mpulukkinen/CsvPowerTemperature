@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CsvPowerToTemp.Interfaces
 {
-    internal interface IHelpProvider
+    public interface IHelpProvider
     {
         void PrintHelpToConsole();
     }
