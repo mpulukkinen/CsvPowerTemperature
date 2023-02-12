@@ -32,11 +32,19 @@ namespace CsvPowerToTemp.PowerReadingProviders
 
         public static void ProcessContents(CultureInfo provider, List<PowerReading> currentList, string content, string file)
         {
-            var year = int.Parse(string.Join("", Path.GetFileName(file).Split("_")[1].Take(4)));
+            var isOomi = file.StartsWith("Sähkö_");
+
+            var dateFormat = isOomi ? "d.M.yyyy H:mm" : "d.M. H:mm:ss"; //  1.2.2022 0:00
+
+            var year = isOomi ? 0 : int.Parse(string.Join("", Path.GetFileName(file).Split("_")[1].Take(4)));
             foreach (var line in CsvReader.ReadFromText(content))
             {
+                if(line.ColumnCount < 3)
+                {
+                    continue;
+                }
                 // Header is handled, each line will contain the actual row data
-                var time = line[0];
+                var time = line[0].Trim();
                 var power = line[1];
 
                 power = power.Replace(",", ".");
@@ -47,14 +55,17 @@ namespace CsvPowerToTemp.PowerReadingProviders
                     break;
                 }
 
-                var temp = line[2];
+                var temp = isOomi ? line[3]: line[2];
 
                 temp = temp.Replace(",", ".");
 
                 try
                 {
-                    var actualDate = DateTime.ParseExact(time, "d.M. H:mm:ss", provider);
-                    actualDate = new DateTime(year, actualDate.Month, actualDate.Day, actualDate.Hour, actualDate.Minute, actualDate.Second);
+                    var actualDate = DateTime.ParseExact(time, dateFormat, provider);
+                    if (!isOomi)
+                    {
+                        actualDate = new DateTime(year, actualDate.Month, actualDate.Day, actualDate.Hour, actualDate.Minute, actualDate.Second);
+                    }
 
                     var pwr = float.Parse(power, CultureInfo.InvariantCulture);
                     int? tmp = string.IsNullOrEmpty(temp) ? null : (int)Math.Round(float.Parse(temp, CultureInfo.InvariantCulture));
@@ -72,6 +83,11 @@ namespace CsvPowerToTemp.PowerReadingProviders
                 {
                     Log.Error(e, $"Error processing line {line}");
                 }
+            }
+
+            if(isOomi)
+            {
+                // Oomi data has hourly temperature values, conve
             }
         }
 

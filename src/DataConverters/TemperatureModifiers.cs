@@ -30,7 +30,8 @@ public class TemperatureModifiers
         foreach(var g in list.GroupBy(g => g.DateAsDayComparable)) {
             var valsAsList = g.ToList();
             var sum = valsAsList.Sum(s => s.Power);
-            var reading = new PowerReading {Power = sum, Temp = valsAsList[0].Temp, Time = valsAsList[0].Time};
+            var avgTemp = (int)Math.Round((decimal)valsAsList.Average(s => s.Temp));
+            var reading = new PowerReading {Power = sum, Temp = avgTemp, Time = valsAsList[0].Time};
             output.Add(reading);
         }
 
